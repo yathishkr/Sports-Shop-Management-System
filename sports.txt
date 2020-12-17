@@ -1,0 +1,95 @@
+create table shop
+(branchid varchar(10) primary key,
+ branchname varchar(20),
+ location varchar(20));
+
+create table customer
+(custid varchar(10) primary key,
+ custname varchar(10),
+ address varchar(20),
+ phoneno int(10));
+
+create table employee
+(empid varchar(10) primary key,
+ empname varchar(10),
+ salary int(6),
+ email varchar(20),
+ branchid varchar(10) references shop(branchid) on delete cascade);
+
+create table booking
+(bookeddate date primary key,
+ branchid varchar(10) references shop(branchid) on delete cascade);
+
+create table equipment
+(equipid varchar(10) primary key,
+ custid varchar(10) references customer(custid) on delete cascade,
+ branchid varchar(10) references shop(branchid) on delete cascade,
+ sportsname varchar(20),
+ equipname varchar(20),
+ price int(10),
+ bookeddate date references booking(bookeddate) on delete cascade);
+
+create table discount
+(custid varchar(10) references customer(custid) on delete cascade,
+ equipid varchar(10) references employee(equipid) on delete cascade,
+ primary key(custid,equipid),
+ discountpercentage varchar(3));
+
+create table phoneno
+(custid varchar(10) references customer(custid) on delete cascade,
+phoneno bigint(10),
+primary key(custid,phoneno));
+
+insert into shop values(1,'vijaynagar','bengaluru');
+insert into shop values(2,'jayanagar','bengaluru');
+insert into shop values(3,'sakaleshpur','hassan');
+insert into shop values(4,'ashokpuram','mysore');
+insert into shop values(5,'malleshwaram','bengaluru');
+
+insert into customer values(1001,'amruth','bengaluru',9980463321);
+insert into customer values(1002,'aarav','hassan',8867567233);
+insert into customer values(1003,'deepika','mysore',7019648666);
+insert into customer values(1004,'chirag','bengaluru',8693213344);
+insert into customer values(1005,'kriti','bengaluru',9986434431);
+
+insert into employee values(101,'neerav',15000,'neeravm@gmail.com',3);
+insert into employee values(102,'arnav',20000,'arnavkp98@gmail.com',1);
+insert into employee values(103,'nischith',10000,'nischith97@gmail.com',2);
+insert into employee values(104,'sanvi',18000,'sanvijoseph@gmail.com',4);
+insert into employee values(105,'parinithi',22000,'parinithi23@gmail.com',5);
+
+insert into booking values('01-jan-17',1);
+insert into booking values('31-may-16',4);
+insert into booking values('02-jun-15',2);
+insert into booking values('05-mar-14',1);
+insert into booking values('12-sep-14',5);
+
+insert into equipment values(11,1002,4,'cricket','bat','05-mar-14');
+insert into equipment values(12,1003,3,'badminton','racquet','31-may-16');
+insert into equipment values(13,1001,1,'kabaddi','tshirt','02-jun-15');
+insert into equipment values(14,1005,5,'golf','shoe','12-sep-14');
+insert into equipment values(15,1004,2,'volleyball','net','01-jan-17');
+
+insert into discount values(1001,12,'40%');
+insert into discount values(1003,13,'30%');
+insert into discount values(1004,11,'40%');
+insert into discount values(1005,14,'25%');
+insert into discount values(1002,15,'45%');
+
+create table has
+(branchid varchar(10) references shop(branchid) on delete cascade,
+ equipid varchar(10) references employee(equipid) on delete cascade);
+
+create table buys
+(custid varchar(10) references customer(custid) on delete cascade,
+ equipid varchar(10) references employee(equipid) on delete cascade);
+
+create table offers
+(custid varchar(10) references customer(custid) on delete cascade,
+ branchid varchar(10) references shop(branchid) on delete cascade);
+
+
+
+
+
+
